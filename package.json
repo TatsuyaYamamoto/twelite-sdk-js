@@ -1,0 +1,22 @@
+{
+  "name": "twelite-sdk",
+  "version": "0.0.1",
+  "description": "Unofficial TWELITE SDK for javascript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TatsuyaYamamoto/twelite-sdk.git"
+  },
+  "keywords": [
+    "twelite"
+  ],
+  "author": "Tatsuya Yamamoto",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TatsuyaYamamoto/twelite-sdk/issues"
+  },
+  "homepage": "https://github.com/TatsuyaYamamoto/twelite-sdk#readme"
+}
