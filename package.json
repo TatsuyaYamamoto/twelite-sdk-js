@@ -2,7 +2,7 @@
   "name": "twelite-sdk",
   "version": "0.0.1",
   "description": "Unofficial TWELITE SDK for javascript",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest"
   },
