@@ -61,6 +61,15 @@ class TweliteCommand {
     }
 
     /**
+     * TWELITEが規定したデータフォーマットに従う、シリアル通信するための文字列を構築する。
+     *
+     * @abstract
+     */
+    build(){
+        throw new Error('No implementation.');
+    };
+
+    /**
      * 受け取ったデータが正しいかどうかを確認するための付加データを計算する
      * データ部の各バイトの和を８ビット幅で計算し２の補数をとる
      *

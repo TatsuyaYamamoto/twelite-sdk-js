@@ -92,6 +92,7 @@ class ChangeOutputCommand extends TweliteCommand{
      * TWELITEが規定したデータフォーマットに従う、シリアル通信するための文字列を構築する。
      *
      * @return {string}
+     * @override
      */
     build(){
         const digitalOutputs = this._convertDigital(this.digital);
