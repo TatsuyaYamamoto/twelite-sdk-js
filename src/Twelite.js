@@ -48,6 +48,16 @@ class Twelite {
     }
 
     /**
+     * 接続がopen状態の場合、trueを返却する。
+     *
+     * @return {boolean}
+     * @readonly
+     */
+    get isOpen() {
+        return this._serialPort.isOpen;
+    };
+
+    /**
      * Tweliteが返却する有効なシリアルポートに関するメタデータの型
      *
      * @typedef {object} SerialPortMetaData
@@ -129,7 +139,7 @@ class Twelite {
      * @return {Promise}
      * @private
      */
-    _openWithPromise(){
+    _openWithPromise() {
         return new Promise((onFulfilled, onRejected) => {
             this._serialPort.open(function (err) {
                 if (err) {
@@ -147,7 +157,7 @@ class Twelite {
      * @return {Promise}
      * @private
      */
-    _closeWithPromise(){
+    _closeWithPromise() {
         return new Promise((onFulfilled, onRejected) => {
             this._serialPort.close(function (err) {
                 if (err) {
@@ -165,7 +175,7 @@ class Twelite {
      * @return {Promise.<string>}
      * @private
      */
-    _writeWithPromise(data){
+    _writeWithPromise(data) {
         return new Promise((onFulfilled, onRejected) => {
             this._serialPort.write(data, 'utf8', function (err) {
                 if (err) {
