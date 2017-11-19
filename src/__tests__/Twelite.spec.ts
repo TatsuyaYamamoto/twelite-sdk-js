@@ -1,12 +1,12 @@
-const Twelite = require('../Twelite');
+import Twelite from '../Twelite';
 
 describe('Twelite', () => {
     describe('#serialPorts', () => {
         it('should return a port data that has manufacture as MONOWIRELESS.', () => {
             return Twelite.serialPorts()
-                .then(ports => {
+                .then((ports: any[]) => {
                     expect(ports).toHaveLength(1);
-                    ports.forEach(port => {
+                    ports.forEach((port: any) => {
                         expect(port).toHaveProperty('comName');
                         expect(port).toHaveProperty('locationId');
                         expect(port).toHaveProperty('manufacturer');
@@ -20,9 +20,9 @@ describe('Twelite', () => {
 
         it('should return 3 length ports array that has any manufacture.', () => {
             return Twelite.serialPorts(true)
-                .then(ports => {
+                .then((ports: any[]) => {
                     expect(ports).toHaveLength(3);
-                    ports.forEach(port => {
+                    ports.forEach((port: any) => {
                         expect(port).toHaveProperty('comName');
                         expect(port).toHaveProperty('locationId');
                         expect(port).toHaveProperty('manufacturer');
@@ -37,9 +37,9 @@ describe('Twelite', () => {
 
     describe('#open', () => {
         it('can open and change isOpen true.', () => {
-            let twelite = null;
+            let twelite: Twelite = null;
             return Twelite.serialPorts()
-                .then(([port]) => {
+                .then(([port]: any) => {
                     twelite = new Twelite(port.comName);
                     expect(twelite.isOpen).toBeFalsy();
                 })
@@ -47,24 +47,24 @@ describe('Twelite', () => {
                 .then(() => expect(twelite.isOpen).toBeTruthy());
         });
         it('should throw error while opening.', () => {
-            let twelite = null;
+            let twelite: Twelite = null;
             return Twelite.serialPorts()
-                .then(([port]) => {
+                .then(([port]: any) => {
                     twelite = new Twelite(port.comName);
                     expect(twelite.isOpen).toBeFalsy();
                 })
                 .then(() => twelite.open())
                 .then(() => twelite.open())
                 .then(() => fail('Thrown no error.'))
-                .catch((error) => expect(error).not.toBeNull());
+                .catch((error: Error) => expect(error).not.toBeNull());
         });
     });
 
     describe('#close', () => {
         it('can close.', () => {
-            let twelite = null;
+            let twelite: Twelite = null;
             return Twelite.serialPorts()
-                .then(([port]) => {
+                .then(([port]: any) => {
                     twelite = new Twelite(port.comName);
                     expect(twelite.isOpen).toBeFalsy();
                 })
@@ -75,15 +75,15 @@ describe('Twelite', () => {
         });
 
         it('should throw error not while opening.', () => {
-            let twelite = null;
+            let twelite: Twelite = null;
             return Twelite.serialPorts()
-                .then(([port]) => {
+                .then(([port]: any) => {
                     twelite = new Twelite(port.comName);
                     expect(twelite.isOpen).toBeFalsy();
                 })
                 .then(() => twelite.close())
                 .then(() => fail())
-                .catch((error) => expect(error).not.toBeNull());
+                .catch((error: Error) => expect(error).not.toBeNull());
         });
     });
 

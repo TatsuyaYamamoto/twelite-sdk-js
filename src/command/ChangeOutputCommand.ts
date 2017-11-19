@@ -1,4 +1,4 @@
-const TweliteCommand = require('./TweliteCommand');
+import TweliteCommand from './TweliteCommand';
 
 
 /**
@@ -16,13 +16,17 @@ const TweliteCommand = require('./TweliteCommand');
  * @class
  * @extends TweliteCommand
  */
-class ChangeOutputCommand extends TweliteCommand{
+class ChangeOutputCommand extends TweliteCommand {
+    private _command: number;
+    private _digital: number[];
+    private _analog: number[];
+
     /**
      *
      * @param addressId
      * @constructor
      */
-    constructor(addressId) {
+    constructor(addressId?: number) {
         super(addressId);
 
         this._command = 0x80;
@@ -36,7 +40,7 @@ class ChangeOutputCommand extends TweliteCommand{
      * @type {number}
      * @readonly
      */
-    get command(){
+    get command() {
         return this._command;
     }
 
@@ -52,13 +56,13 @@ class ChangeOutputCommand extends TweliteCommand{
      *
      * @return {number[]}
      */
-    get digital(){
+    get digital() {
         return this._digital;
     }
 
     /** @param {number[]} digital */
-    set digital(digital){
-        if(!Array.isArray(digital) || digital.length !== 4){
+    set digital(digital) {
+        if (!Array.isArray(digital) || digital.length !== 4) {
             console.error('Digital of twelite change output command should be array and have 4 numbers.');
             return;
         }
@@ -74,13 +78,13 @@ class ChangeOutputCommand extends TweliteCommand{
      *
      * @return {number[]}
      */
-    get analog(){
+    get analog() {
         return this._analog;
     }
 
     /** @param {number[]} analog */
-    set analog(analog){
-        if(!Array.isArray(analog) || analog.length !== 4){
+    set analog(analog) {
+        if (!Array.isArray(analog) || analog.length !== 4) {
             console.error('Analog of twelite change output command should be array and have 4 numbers.');
             return;
         }
@@ -94,9 +98,9 @@ class ChangeOutputCommand extends TweliteCommand{
      * @return {string}
      * @override
      */
-    build(){
+    build() {
         const digitalOutputs = this._convertDigital(this.digital);
-        const pwmOutputs = [];
+        const pwmOutputs: number[] = [];
         this.analog.forEach((a) => pwmOutputs.push(...this._convertAnalog(a)));
 
         const data = [];
@@ -119,7 +123,7 @@ class ChangeOutputCommand extends TweliteCommand{
      * @return {number[]}               変換されたIOとビットマスクの配列
      * @private
      */
-    _convertDigital(digitalSignals) {
+    _convertDigital(digitalSignals: number[]) {
         let digitalIo = 0;
         let digitalIoMask = 0;
         digitalSignals.forEach((digital, index) => {
@@ -139,9 +143,10 @@ class ChangeOutputCommand extends TweliteCommand{
      * @return {number[]}   変換された16進数の値の配列
      * @private
      */
-    _convertAnalog(pwm) {
+    _convertAnalog(pwm: number) {
         if (0 <= pwm && pwm <= 100) {
-            const value = parseInt(1024 * pwm / 100);
+            // TODO: check this parse is necessary.
+            const value = parseInt(`${1024 * pwm / 100}`);
 
             return [value >> 8, value & 0xff];
         } else {
@@ -150,4 +155,4 @@ class ChangeOutputCommand extends TweliteCommand{
     }
 }
 
-module.exports = ChangeOutputCommand;
+export default ChangeOutputCommand;

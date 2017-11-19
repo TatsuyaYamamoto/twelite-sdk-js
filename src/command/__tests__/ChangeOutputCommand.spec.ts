@@ -1,4 +1,4 @@
-const ChangeOutputCommand = require('../ChangeOutputCommand');
+import ChangeOutputCommand from '../ChangeOutputCommand';
 
 describe('ChangeOutputCommand', () => {
     describe('Build hex string', () => {

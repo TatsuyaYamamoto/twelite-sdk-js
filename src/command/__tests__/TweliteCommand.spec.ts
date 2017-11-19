@@ -1,4 +1,4 @@
-const TweliteCommand = require('../TweliteCommand');
+import TweliteCommand from '../TweliteCommand';
 
 describe('TweliteCommand', () => {
     describe('Calculating check sum', () => {

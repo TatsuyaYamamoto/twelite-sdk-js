@@ -1,5 +1,5 @@
-const SerialPort = require('serialport');
-const TweliteCommand = require('./command/TweliteCommand');
+import * as SerialPort from 'serialport';
+import TweliteCommand from './command/TweliteCommand';
 
 /**
  *
@@ -32,6 +32,8 @@ const serialPortDefaultSettings = Object.freeze({
  * @class
  */
 class Twelite {
+    private _serialPort: any;
+
     /**
      * {@param comName}に対するシリアル接続を行うインスタンスを作成する。
      *
@@ -41,7 +43,7 @@ class Twelite {
      * @see serialPortDefaultSettings
      * @constructor
      */
-    constructor(comName, serialPortSettings) {
+    constructor(comName: string, serialPortSettings?: object) {
 
         const settings = Object.assign({}, serialPortDefaultSettings, serialPortSettings);
         this._serialPort = new SerialPort(comName, settings);
@@ -80,7 +82,7 @@ class Twelite {
      */
     static serialPorts(anyManufacturer = false) {
         return SerialPort.list()
-            .then((ports) => {
+            .then((ports: any[]) => {
                 return anyManufacturer ?
                     ports :
                     ports.filter(p => p.manufacturer === 'MONOWIRELESS');
@@ -114,7 +116,7 @@ class Twelite {
      * @return {Promise.<string>}
      * @see SerialPort#write
      */
-    write(data) {
+    write(data: TweliteCommand | string | Array<number> | Buffer) {
         const writingData = data instanceof TweliteCommand ?
             data.build() :
             data;
@@ -129,7 +131,7 @@ class Twelite {
      * @see https://www.npmjs.com/package/serialport#module_serialport--SerialPort+event_data
      * @see https://www.npmjs.com/package/serialport#module_serialport--SerialPort+event_error
      */
-    on(type, listener) {
+    on(type: string, listener: Function) {
         this._serialPort.on(type, listener);
     }
 
@@ -141,7 +143,7 @@ class Twelite {
      */
     _openWithPromise() {
         return new Promise((onFulfilled, onRejected) => {
-            this._serialPort.open(function (err) {
+            this._serialPort.open(function (err: Error) {
                 if (err) {
                     onRejected(err);
                 } else {
@@ -159,7 +161,7 @@ class Twelite {
      */
     _closeWithPromise() {
         return new Promise((onFulfilled, onRejected) => {
-            this._serialPort.close(function (err) {
+            this._serialPort.close(function (err: Error) {
                 if (err) {
                     onRejected(err);
                 } else {
@@ -175,9 +177,9 @@ class Twelite {
      * @return {Promise.<string>}
      * @private
      */
-    _writeWithPromise(data) {
+    _writeWithPromise(data: string | Array<number> | Buffer) {
         return new Promise((onFulfilled, onRejected) => {
-            this._serialPort.write(data, 'utf8', function (err) {
+            this._serialPort.write(data, 'utf8', function (err: Error) {
                 if (err) {
                     onRejected(err);
                 } else {
@@ -188,4 +190,4 @@ class Twelite {
     }
 }
 
-module.exports = Twelite;
+export default Twelite;

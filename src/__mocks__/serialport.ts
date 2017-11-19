@@ -1,11 +1,11 @@
 /**
  * @fileOverview
  */
-const SerialPort = require('serialport/test');
+const SerialPort = require('serialport/test.js');
 const MockBindingBase = SerialPort.Binding;
 
 
-function createTestPort(info, opt) {
+function createTestPort(info: any, opt?: any) {
     const options = Object.assign({
         echo: false,
         record: false,
@@ -64,7 +64,7 @@ class MockBinding extends MockBindingBase {
         return Promise.resolve(infoList);
     }
 
-    open(path, opt) {
+    open(path: string, opt: any) {
         if (!path) {
             throw new TypeError('"path" is not a valid port');
         }

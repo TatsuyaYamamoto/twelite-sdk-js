@@ -6,14 +6,19 @@
  * @class
  */
 class TweliteCommand {
-    static get AddressIds()  {
+    private _startBit: string;
+    private _stopBit: string;
+    private _addressId: number;
+    private _protocolVersion: number;
+
+    static get AddressIds() {
         return {
             MASTER_UNIT: 0x00,
             ALL_SLAVE_UNITS: 0x78
         }
     };
 
-    constructor(addressId) {
+    constructor(addressId?: number) {
         this._startBit = ':';
         this._stopBit = '\r\n';
         this._addressId = addressId || TweliteCommand.AddressIds.ALL_SLAVE_UNITS;
@@ -26,7 +31,7 @@ class TweliteCommand {
      * @type {string}
      * @readonly
      */
-    get startBit(){
+    get startBit(): string {
         return this._startBit;
     }
 
@@ -36,7 +41,7 @@ class TweliteCommand {
      * @return {string}
      * @readonly
      */
-    get stopBit(){
+    get stopBit(): string {
         return this._stopBit;
     }
 
@@ -46,7 +51,7 @@ class TweliteCommand {
      * @return {number}
      * @readonly
      */
-    get addressId(){
+    get addressId(): number {
         return this._addressId;
     }
 
@@ -56,7 +61,7 @@ class TweliteCommand {
      * @return {number}
      * @readonly
      */
-    get protocolVersion(){
+    get protocolVersion(): number {
         return this._protocolVersion;
     }
 
@@ -65,7 +70,7 @@ class TweliteCommand {
      *
      * @abstract
      */
-    build(){
+    build(): string {
         throw new Error('No implementation.');
     };
 
@@ -78,7 +83,7 @@ class TweliteCommand {
      * @protected
      * @see https://mono-wireless.com/jp/products/MoNoStick/control.html
      */
-    _calculateCheckSum(data) {
+    _calculateCheckSum(data: number[]): number {
         let checkSum = 0;
         data.forEach(d => {
             checkSum = (checkSum + d) & 0xff
@@ -95,9 +100,9 @@ class TweliteCommand {
      * @return {string}
      * @protected
      */
-    _convertToHex(decimal) {
+    _convertToHex(decimal: number): string {
         return ('00' + decimal.toString(16).toUpperCase()).substr(-2);
     }
 }
 
-module.exports = TweliteCommand;
+export default TweliteCommand;
