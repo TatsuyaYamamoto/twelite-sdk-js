@@ -1,7 +1,15 @@
 /**
  * @fileOverview Twelite-SDKのエントリーポイント
  */
-export * from './Twelite';
+export {
+    default as Twelite,
+    SerialPortMetaData,
+} from './Twelite';
 
-export * from './command/TweliteCommand';
-export * from './command/ChangeOutputCommand';
+export {
+    default as TweliteCommand,
+    AddressIds,
+} from './command/TweliteCommand';
+export {
+    default as ChangeOutputCommand,
+} from './command/ChangeOutputCommand';
