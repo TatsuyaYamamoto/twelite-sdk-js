@@ -2,8 +2,12 @@
   "name": "twelite-sdk",
   "version": "0.0.1",
   "description": "Unofficial TWELITE SDK for javascript",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
+    "build": "npm run clean && npm run build-ts",
+    "build-ts": "tsc",
+    "clean": "rm -rf dist",
     "test": "jest"
   },
   "repository": {
