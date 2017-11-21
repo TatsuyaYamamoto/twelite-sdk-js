@@ -3,7 +3,6 @@ import TweliteCommand from './command/TweliteCommand';
 
 /**
  *
- * @type {Object}
  * @const
  */
 const serialPortDefaultSettings = Object.freeze({
@@ -55,7 +54,7 @@ class Twelite {
      * @return {boolean}
      * @readonly
      */
-    public get isOpen() {
+    public get isOpen(): boolean {
         return this._serialPort.isOpen;
     };
 
@@ -80,7 +79,7 @@ class Twelite {
      * @see SerialPort#list
      * @static
      */
-    public static serialPorts(anyManufacturer = false) {
+    public static serialPorts(anyManufacturer = false): Promise<object> {
         return SerialPort.list()
             .then((ports: any[]) => {
                 return anyManufacturer ?
@@ -92,10 +91,10 @@ class Twelite {
     /**
      * 設定されたパス{@link Twelite#constructor}に対して、シリアル接続を開始する
      *
-     * @return {Promise.<undefined>}
+     * @return {Promise<void>}
      * @see SerialPort#open
      */
-    public open() {
+    public open(): Promise<void> {
         return this._openWithPromise();
     }
 
@@ -112,11 +111,11 @@ class Twelite {
     /**
      * 接続されたシリアル接続先にデータを書き込む。
      *
-     * @param data {(TweliteCommand|string|array|buffer)}
-     * @return {Promise.<string>}
+     * @param {TweliteCommand | string | Array<number> | Buffer} data
+     * @return {Promise<void>}
      * @see SerialPort#write
      */
-    public write(data: TweliteCommand | string | Array<number> | Buffer) {
+    public write(data: TweliteCommand | string | Array<number> | Buffer): Promise<void> {
         const writingData = data instanceof TweliteCommand ?
             data.build() :
             data;
@@ -131,17 +130,17 @@ class Twelite {
      * @see https://www.npmjs.com/package/serialport#module_serialport--SerialPort+event_data
      * @see https://www.npmjs.com/package/serialport#module_serialport--SerialPort+event_error
      */
-    public on(type: string, listener: Function) {
+    public on(type: string, listener: Function): void {
         this._serialPort.on(type, listener);
     }
 
     /**
      * Promiseを返却する{@link SerialPort#open}のラッパー
      *
-     * @return {Promise}
+     * @return {Promise<void>}
      * @private
      */
-    private _openWithPromise() {
+    private _openWithPromise(): Promise<void> {
         return new Promise((onFulfilled, onRejected) => {
             this._serialPort.open(function (err: Error) {
                 if (err) {
@@ -156,10 +155,10 @@ class Twelite {
     /**
      * Promiseを返却する{@link SerialPort#close}のラッパー
      *
-     * @return {Promise}
+     * @return {Promise<void>}
      * @private
      */
-    private _closeWithPromise() {
+    private _closeWithPromise(): Promise<void> {
         return new Promise((onFulfilled, onRejected) => {
             this._serialPort.close(function (err: Error) {
                 if (err) {
@@ -174,16 +173,17 @@ class Twelite {
     /**
      * Promiseを返却する{@link SerialPort#write}のラッパー
      *
-     * @return {Promise.<string>}
+     * @param {string | Array<number> | Buffer} data
+     * @return {Promise<void>}
      * @private
      */
-    private _writeWithPromise(data: string | Array<number> | Buffer) {
+    private _writeWithPromise(data: string | Array<number> | Buffer): Promise<void> {
         return new Promise((onFulfilled, onRejected) => {
             this._serialPort.write(data, 'utf8', function (err: Error) {
                 if (err) {
                     onRejected(err);
                 } else {
-                    onFulfilled(data);
+                    onFulfilled();
                 }
             });
         })

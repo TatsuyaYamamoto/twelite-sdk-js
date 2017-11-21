@@ -37,31 +37,31 @@ class ChangeOutputCommand extends TweliteCommand {
     /**
      * コマンド番号 (0x80 固定)
      *
-     * @type {number}
+     * @return {number}
      * @readonly
      */
-    public get command() {
+    public get command(): number {
         return this._command;
     }
 
     /**
      * DO1/DO2/DO3/DO4の設定値。number型の配列にそれぞれの値が格納される。
      *
-     * 値は0がHi(制御対象にしてオンにする)、1がLo(制御対象にしてオフにする)、-1が(制御対象にしない)。
+     * 値は0がHi(制御対象にする)、1がLo(制御対象にする)、-1が(制御対象にしない)。
      * 上記以外の値の場合、
-     * -1未満の値は-1
+     * -1未満の値は、-1
      * 2以上の値は、偶数は0として、機数は1
      * 小数値は、小数部が切り捨て
      * として評価し、{@link this#build()}にて規定されたデーターフォーマットに変換される。
      *
      * @return {number[]}
      */
-    public get digital() {
+    public get digital(): number[] {
         return this._digital;
     }
 
     /** @param {number[]} digital */
-    public set digital(digital) {
+    public set digital(digital: number[]) {
         if (!Array.isArray(digital) || digital.length !== 4) {
             console.error('Digital of twelite change output command should be array and have 4 numbers.');
             return;
@@ -78,12 +78,12 @@ class ChangeOutputCommand extends TweliteCommand {
      *
      * @return {number[]}
      */
-    public get analog() {
+    public get analog(): number[] {
         return this._analog;
     }
 
     /** @param {number[]} analog */
-    public set analog(analog) {
+    public set analog(analog: number[]) {
         if (!Array.isArray(analog) || analog.length !== 4) {
             console.error('Analog of twelite change output command should be array and have 4 numbers.');
             return;
@@ -98,12 +98,12 @@ class ChangeOutputCommand extends TweliteCommand {
      * @return {string}
      * @override
      */
-    public build() {
+    public build(): string {
         const digitalOutputs = this._convertDigital(this.digital);
         const pwmOutputs: number[] = [];
         this.analog.forEach((a) => pwmOutputs.push(...this._convertAnalog(a)));
 
-        const data = [];
+        const data: number[] = [];
         data.push(this.addressId);
         data.push(this.command);
         data.push(this.protocolVersion);
@@ -123,7 +123,7 @@ class ChangeOutputCommand extends TweliteCommand {
      * @return {number[]}               変換されたIOとビットマスクの配列
      * @private
      */
-    private _convertDigital(digitalSignals: number[]) {
+    private _convertDigital(digitalSignals: number[]): number[] {
         let digitalIo = 0;
         let digitalIoMask = 0;
         digitalSignals.forEach((digital, index) => {
@@ -137,13 +137,14 @@ class ChangeOutputCommand extends TweliteCommand {
     }
 
     /**
-     * PWM(Pulse Width Modulation)として入力された1-100の整数値をTWELITEが規定する0-1024または0xFF(設定しない)に変換する。
+     * PWM(Pulse Width Modulation)として入力された0-100の整数値をTWELITEが規定する0-1024に変換する。
+     * 0-100の範囲外の値は0xFF(設定しない)に変換する。
      *
      * @param pwm {number} PWMの入力値
      * @return {number[]}   変換された16進数の値の配列
      * @private
      */
-    private _convertAnalog(pwm: number) {
+    private _convertAnalog(pwm: number): number[] {
         if (0 <= pwm && pwm <= 100) {
             // TODO: check this parse is necessary.
             const value = parseInt(`${1024 * pwm / 100}`);
