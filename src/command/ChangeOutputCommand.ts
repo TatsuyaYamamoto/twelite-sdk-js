@@ -26,7 +26,7 @@ class ChangeOutputCommand extends TweliteCommand {
      * @param addressId
      * @constructor
      */
-    constructor(addressId?: number) {
+    public constructor(addressId?: number) {
         super(addressId);
 
         this._command = 0x80;
@@ -40,7 +40,7 @@ class ChangeOutputCommand extends TweliteCommand {
      * @type {number}
      * @readonly
      */
-    get command() {
+    public get command() {
         return this._command;
     }
 
@@ -56,12 +56,12 @@ class ChangeOutputCommand extends TweliteCommand {
      *
      * @return {number[]}
      */
-    get digital() {
+    public get digital() {
         return this._digital;
     }
 
     /** @param {number[]} digital */
-    set digital(digital) {
+    public set digital(digital) {
         if (!Array.isArray(digital) || digital.length !== 4) {
             console.error('Digital of twelite change output command should be array and have 4 numbers.');
             return;
@@ -78,12 +78,12 @@ class ChangeOutputCommand extends TweliteCommand {
      *
      * @return {number[]}
      */
-    get analog() {
+    public get analog() {
         return this._analog;
     }
 
     /** @param {number[]} analog */
-    set analog(analog) {
+    public set analog(analog) {
         if (!Array.isArray(analog) || analog.length !== 4) {
             console.error('Analog of twelite change output command should be array and have 4 numbers.');
             return;
@@ -98,7 +98,7 @@ class ChangeOutputCommand extends TweliteCommand {
      * @return {string}
      * @override
      */
-    build() {
+    public build() {
         const digitalOutputs = this._convertDigital(this.digital);
         const pwmOutputs: number[] = [];
         this.analog.forEach((a) => pwmOutputs.push(...this._convertAnalog(a)));
@@ -123,7 +123,7 @@ class ChangeOutputCommand extends TweliteCommand {
      * @return {number[]}               変換されたIOとビットマスクの配列
      * @private
      */
-    _convertDigital(digitalSignals: number[]) {
+    private _convertDigital(digitalSignals: number[]) {
         let digitalIo = 0;
         let digitalIoMask = 0;
         digitalSignals.forEach((digital, index) => {
@@ -143,7 +143,7 @@ class ChangeOutputCommand extends TweliteCommand {
      * @return {number[]}   変換された16進数の値の配列
      * @private
      */
-    _convertAnalog(pwm: number) {
+    private _convertAnalog(pwm: number) {
         if (0 <= pwm && pwm <= 100) {
             // TODO: check this parse is necessary.
             const value = parseInt(`${1024 * pwm / 100}`);

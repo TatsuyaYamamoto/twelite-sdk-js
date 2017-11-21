@@ -43,7 +43,7 @@ class Twelite {
      * @see serialPortDefaultSettings
      * @constructor
      */
-    constructor(comName: string, serialPortSettings?: object) {
+    public constructor(comName: string, serialPortSettings?: object) {
 
         const settings = Object.assign({}, serialPortDefaultSettings, serialPortSettings);
         this._serialPort = new SerialPort(comName, settings);
@@ -55,7 +55,7 @@ class Twelite {
      * @return {boolean}
      * @readonly
      */
-    get isOpen() {
+    public get isOpen() {
         return this._serialPort.isOpen;
     };
 
@@ -80,7 +80,7 @@ class Twelite {
      * @see SerialPort#list
      * @static
      */
-    static serialPorts(anyManufacturer = false) {
+    public static serialPorts(anyManufacturer = false) {
         return SerialPort.list()
             .then((ports: any[]) => {
                 return anyManufacturer ?
@@ -95,7 +95,7 @@ class Twelite {
      * @return {Promise.<undefined>}
      * @see SerialPort#open
      */
-    open() {
+    public open() {
         return this._openWithPromise();
     }
 
@@ -105,7 +105,7 @@ class Twelite {
      * @return {Promise.<undefined>}
      * @see SerialPort#close
      */
-    close() {
+    public close() {
         return this._closeWithPromise();
     }
 
@@ -116,7 +116,7 @@ class Twelite {
      * @return {Promise.<string>}
      * @see SerialPort#write
      */
-    write(data: TweliteCommand | string | Array<number> | Buffer) {
+    public write(data: TweliteCommand | string | Array<number> | Buffer) {
         const writingData = data instanceof TweliteCommand ?
             data.build() :
             data;
@@ -131,7 +131,7 @@ class Twelite {
      * @see https://www.npmjs.com/package/serialport#module_serialport--SerialPort+event_data
      * @see https://www.npmjs.com/package/serialport#module_serialport--SerialPort+event_error
      */
-    on(type: string, listener: Function) {
+    public on(type: string, listener: Function) {
         this._serialPort.on(type, listener);
     }
 
@@ -141,7 +141,7 @@ class Twelite {
      * @return {Promise}
      * @private
      */
-    _openWithPromise() {
+    private _openWithPromise() {
         return new Promise((onFulfilled, onRejected) => {
             this._serialPort.open(function (err: Error) {
                 if (err) {
@@ -159,7 +159,7 @@ class Twelite {
      * @return {Promise}
      * @private
      */
-    _closeWithPromise() {
+    private _closeWithPromise() {
         return new Promise((onFulfilled, onRejected) => {
             this._serialPort.close(function (err: Error) {
                 if (err) {
@@ -177,7 +177,7 @@ class Twelite {
      * @return {Promise.<string>}
      * @private
      */
-    _writeWithPromise(data: string | Array<number> | Buffer) {
+    private _writeWithPromise(data: string | Array<number> | Buffer) {
         return new Promise((onFulfilled, onRejected) => {
             this._serialPort.write(data, 'utf8', function (err: Error) {
                 if (err) {
