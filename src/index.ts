@@ -1,6 +1,7 @@
 /**
  * @fileOverview Twelite-SDKのエントリーポイント
  */
-exports = module.exports = require('./Twelite');
+export * from './Twelite';
 
-exports.ChangeOutputCommand = require('./command/ChangeOutputCommand');
+export * from './command/TweliteCommand';
+export * from './command/ChangeOutputCommand';
