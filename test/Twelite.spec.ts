@@ -1,4 +1,4 @@
-import Twelite from '../Twelite';
+import Twelite from '../src/Twelite';
 
 describe('Twelite', () => {
     describe('#serialPorts', () => {

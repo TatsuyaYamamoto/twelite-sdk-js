@@ -1,4 +1,4 @@
-import ChangeOutputCommand from '../ChangeOutputCommand';
+import ChangeOutputCommand from '../../src/command/ChangeOutputCommand';
 
 describe('ChangeOutputCommand', () => {
     describe('Build hex string', () => {

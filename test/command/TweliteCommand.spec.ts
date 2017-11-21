@@ -1,4 +1,4 @@
-import TweliteCommand from '../TweliteCommand';
+import TweliteCommand from '../../src/command/TweliteCommand';
 
 describe('TweliteCommand', () => {
     describe('Calculating check sum', () => {
