@@ -2,7 +2,22 @@ import * as SerialPort from 'serialport';
 import TweliteCommand from './command/TweliteCommand';
 
 /**
+ * Tweliteが返却する有効なシリアルポートに関するメタデータの型
  *
+ * @see https://www.npmjs.com/package/serialport#serialportlistcallback-⇒-promise
+ */
+export interface SerialPortMetaData {
+    comName: string;
+    manufacturer: string;
+    serialNumber: string;
+    pnpId: string;
+    locationId: string;
+    vendorId: string;
+    productId: string;
+}
+
+/**
+ * {@link SerialPort#constructor}に渡す初期パラメータ
  * @const
  */
 const serialPortDefaultSettings = Object.freeze({
@@ -59,27 +74,14 @@ class Twelite {
     };
 
     /**
-     * Tweliteが返却する有効なシリアルポートに関するメタデータの型
-     *
-     * @typedef {object} SerialPortMetaData
-     * @param comName{string}
-     * @param manufacturer{string}
-     * @param serialNumber{string}
-     * @param pnpId{string}
-     * @param locationId{string}
-     * @param vendorId{string}
-     * @param productId{string}
-     * @see SerialPort#list
-     */
-    /**
      * 'MONOWIRELESS'が製造元の有効なシリアル接続のメタデータを返却する。
      *
      * @param anyManufacturer {boolean} trueの場合、呼び出し元に接続されている全てのシリアル接続のメタデータを返却する
-     * @return {Promise.<SerialPortMetaData>}
+     * @return {Promise<SerialPortMetaData>}
      * @see SerialPort#list
      * @static
      */
-    public static serialPorts(anyManufacturer = false): Promise<object> {
+    public static serialPorts(anyManufacturer = false): Promise<SerialPortMetaData> {
         return SerialPort.list()
             .then((ports: any[]) => {
                 return anyManufacturer ?
