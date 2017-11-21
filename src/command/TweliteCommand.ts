@@ -1,4 +1,12 @@
 /**
+ * TWELITEが規定している宛先アドレス（論理デバイスID）
+ */
+export enum AddressIds {
+    MASTER_UNIT = 0x00,
+    ALL_SLAVE_UNITS = 0x78,
+}
+
+/**
  * TWELITE端末を遠隔操作するためのUARTコマンドを表現する基底クラス。
  * 各種コマンドで共通するデータフォーマットとして、先頭が : （コロン）で続いて 0-9 A-F の文字列が連続し <CR><LF>で終端する。
  *
@@ -11,17 +19,10 @@ class TweliteCommand {
     private _addressId: number;
     private _protocolVersion: number;
 
-    public static get AddressIds() {
-        return {
-            MASTER_UNIT: 0x00,
-            ALL_SLAVE_UNITS: 0x78
-        }
-    };
-
-    public constructor(addressId?: number) {
+    public constructor(addressId?: AddressIds) {
         this._startBit = ':';
         this._stopBit = '\r\n';
-        this._addressId = addressId || TweliteCommand.AddressIds.ALL_SLAVE_UNITS;
+        this._addressId = addressId || AddressIds.ALL_SLAVE_UNITS;
         this._protocolVersion = 0x01;
     }
 
@@ -48,10 +49,10 @@ class TweliteCommand {
     /**
      * 宛先アドレス（論理デバイスID） (0x00: 親機, 0x01 ～ 0x64: 子機ID指定, 0x78: 全子機)
      *
-     * @return {number}
+     * @return {AddressIds}
      * @readonly
      */
-    public get addressId(): number {
+    public get addressId(): AddressIds {
         return this._addressId;
     }
 
