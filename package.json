@@ -8,7 +8,8 @@
     "build": "npm run clean && npm run build-ts",
     "build-ts": "tsc",
     "clean": "rm -rf dist",
-    "test": "jest"
+    "test": "jest",
+    "prepublish": "npm run build && npm run test"
   },
   "files": [
     "package.json",
