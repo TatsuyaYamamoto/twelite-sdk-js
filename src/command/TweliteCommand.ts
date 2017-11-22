@@ -19,10 +19,10 @@ class TweliteCommand {
     private _addressId: number;
     private _protocolVersion: number;
 
-    public constructor(addressId?: AddressIds) {
+    public constructor(addressId: AddressIds = AddressIds.ALL_SLAVE_UNITS) {
         this._startBit = ':';
         this._stopBit = '\r\n';
-        this._addressId = addressId || AddressIds.ALL_SLAVE_UNITS;
+        this._addressId = addressId;
         this._protocolVersion = 0x01;
     }
 
