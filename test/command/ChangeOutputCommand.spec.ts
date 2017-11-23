@@ -1,6 +1,9 @@
 import ChangeOutputCommand from '../../src/command/ChangeOutputCommand';
 
 describe('ChangeOutputCommand', () => {
+    /**
+     * @see https://mono-wireless.com/jp/products/MoNoStick/control.html
+     */
     describe('Build hex string', () => {
         it('with default value', () => {
             const command = new ChangeOutputCommand();
@@ -23,6 +26,12 @@ describe('ChangeOutputCommand', () => {
             command.digital = [0, 1, -1, -1];
             command.analog = [72, 33, 19, 46];
             expect(command.build()).toBe(':788001020302E1015100C201D733\r\n');
+        });
+
+        it('with active 100% of PWM3 only.', () => {
+            const command = new ChangeOutputCommand();
+            command.analog = [-1, -1, 100, -1];
+            expect(command.build()).toBe(':7880010000FFFFFFFF0400FFFF09\r\n');
         });
     });
 
